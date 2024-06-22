@@ -31,7 +31,7 @@ mkdir -p "${DESTINATION_DIR}/${IMG_NAME}"
 mkdir -p "${DESTINATION_DIR}/tmp_mount"
 
 sudo mount -o loop "${IMAGE_PATH}" "${DESTINATION_DIR}/tmp_mount"
-cp -R "${DESTINATION_DIR}/tmp_mount"* "${DESTINATION_DIR}/${IMG_NAME}"
+cp -R "${DESTINATION_DIR}/tmp_mount/"* "${DESTINATION_DIR}/${IMG_NAME}"
 sudo umount "${DESTINATION_DIR}/tmp_mount"
 
 rm -rf "${DESTINATION_DIR}/tmp_mount"
