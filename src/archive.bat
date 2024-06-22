@@ -2,7 +2,7 @@
 cls
 
 echo This is an archiver script to archive floppy in batch
-echo Copyright Jason Chalom 2024
+echo Copyright Jason Chalom 2024 v0.1
 echo.
 
 set "BaseSavePath=%1"

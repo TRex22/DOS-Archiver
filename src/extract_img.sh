@@ -8,7 +8,7 @@
 IMAGE_PATH="$1"
 DESTINATION_DIR="$2"
 
-printf "Mini IMG Extractor, Jason Chalom 2024 \n"
+printf "Mini IMG Extractor, Jason Chalom 2024 v0.1 \n"
 
 if [ -z "$IMAGE_PATH" ] || [ -z "$DESTINATION_DIR" ]; then
   printf "Usage: $0 IMAGE_PATH DESTINATION_DIR \n" >&2
