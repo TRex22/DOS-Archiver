@@ -20,13 +20,15 @@ if [ ! -e "${IMAGE_PATH}" ]; then
   exit 1
 fi
 
-mkdir -p "${DESTINATION_DIR}"
 if [ ! -d "${DESTINATION_DIR}" ]; then
   printf "Error: Destination directory does not exist. \n" >&2
   exit 1
 fi
 
-sudo mount -o loop "${IMAGE_PATH}" "${DESTINATION_DIR}/"
+IMG_NAME="$(basename ${IMG_FILE} .img)"
 
-cp -R "${DESTINATION_DIR}/"* "${DESTINATION_DIR}/"
-sudo umount "${DESTINATION_DIR}/"
+mkdir -p "${DESTINATION_DIR}/${IMG_NAME}"
+
+mount -o loop "${IMAGE_PATH}" "${DESTINATION_DIR}/tmp_mount"
+cp -R "${DESTINATION_DIR}/tmp_mount"* "${DESTINATION_DIR}/${IMG_NAME}"
+umount "${DESTINATION_DIR}/tmp_mount"
