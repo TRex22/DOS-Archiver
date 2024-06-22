@@ -20,6 +20,7 @@ if [ ! -e "${IMAGE_PATH}" ]; then
   exit 1
 fi
 
+mkdir -p "${DESTINATION_DIR}"
 if [ ! -d "${DESTINATION_DIR}" ]; then
   printf "Error: Destination directory does not exist. \n" >&2
   exit 1
@@ -30,7 +31,6 @@ IMG_NAME="$(basename ${IMG_FILE} .img)"
 losetup -f --show ${IMG_FILE} > /dev/null
 DEVICE=$(sed 's/.*://' <<< "$(losetup --find ${IMG_FILE})")
 
-mkdir -p "${DESTINATION_DIR}"
 mount -o loop ${DEVICE} "${DESTINATION_DIR}"
 cp -R "${DEVICE}/"* "${DESTINATION_DIR}/"
 umount ${DEVICE}
