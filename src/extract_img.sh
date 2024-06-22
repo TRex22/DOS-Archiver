@@ -9,17 +9,17 @@ IMAGE_PATH="$1"
 DESTINATION_DIR="$2"
 
 if [ -z "$IMAGE_PATH" ] || [ -z "$DESTINATION_DIR" ]; then
-  printf "Usage: $0 IMAGE_PATH DESTINATION_DIR" >&2
+  print "Usage: $0 IMAGE_PATH DESTINATION_DIR" >&2
   exit 1
 fi
 
 if [ ! -e "${IMAGE_PATH}" ]; then
-  printf "Error: Image file not found." >&2
+  print "Error: Image file not found." >&2
   exit 1
 fi
 
 if [ ! -d "${DESTINATION_DIR}" ]; then
-  printf "Error: Destination directory does not exist." >&2
+  print "Error: Destination directory does not exist." >&2
   exit 1
 fi
 
