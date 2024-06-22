@@ -2,7 +2,7 @@
 # This is a quick and dirty script to mount and copy files into a new folder
 # IMG is easier to mount than other file formats
 
-# IMG_FILE="/path/to/yourimagefile.img"
+# IMAGE_PATH="/path/to/yourimagefile.img"
 # DESTINATION_DIR="/path/to/destination/${IMG_NAME}"
 
 IMAGE_PATH="$1"
@@ -25,13 +25,13 @@ if [ ! -d "${DESTINATION_DIR}" ]; then
   exit 1
 fi
 
-IMG_NAME="$(basename ${IMG_FILE} .img)"
+IMG_NAME="$(basename ${IMAGE_PATH%.*})"
 
 mkdir -p "${DESTINATION_DIR}/${IMG_NAME}"
 mkdir -p "${DESTINATION_DIR}/tmp_mount"
 
 sudo mount -o loop "${IMAGE_PATH}" "${DESTINATION_DIR}/tmp_mount"
-cp -R "${DESTINATION_DIR}/tmp_mount/"* "${DESTINATION_DIR}/${IMG_NAME}"
+cp -r "${DESTINATION_DIR}/tmp_mount/"* "${DESTINATION_DIR}/${IMG_NAME}"
 sudo umount "${DESTINATION_DIR}/tmp_mount"
 
 rm -rf "${DESTINATION_DIR}/tmp_mount"
