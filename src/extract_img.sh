@@ -26,12 +26,7 @@ if [ ! -d "${DESTINATION_DIR}" ]; then
   exit 1
 fi
 
-IMG_NAME="$(basename ${IMG_FILE} .img)"
+sudo mount -o loop "${IMAGE_PATH}" "${DESTINATION_DIR}/"
 
-losetup -f --show ${IMG_FILE} > /dev/null
-DEVICE=$(sed 's/.*://' <<< "$(losetup --find ${IMG_FILE})")
-
-mount -o loop ${DEVICE} "${DESTINATION_DIR}"
-cp -R "${DEVICE}/"* "${DESTINATION_DIR}/"
-umount ${DEVICE}
-losetup -d ${DEVICE}
+cp -R "${DESTINATION_DIR}/"* "${DESTINATION_DIR}/"
+sudo umount "${DESTINATION_DIR}/"
