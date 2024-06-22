@@ -28,7 +28,10 @@ fi
 IMG_NAME="$(basename ${IMG_FILE} .img)"
 
 mkdir -p "${DESTINATION_DIR}/${IMG_NAME}"
+mkdir -p "${DESTINATION_DIR}/tmp_mount"
 
 mount -o loop "${IMAGE_PATH}" "${DESTINATION_DIR}/tmp_mount"
 cp -R "${DESTINATION_DIR}/tmp_mount"* "${DESTINATION_DIR}/${IMG_NAME}"
 umount "${DESTINATION_DIR}/tmp_mount"
+
+rm -f "${DESTINATION_DIR}/tmp_mount"
