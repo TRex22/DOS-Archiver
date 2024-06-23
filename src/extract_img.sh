@@ -8,7 +8,7 @@
 IMAGE_PATH="$1"
 DESTINATION_DIR="$2"
 
-printf "Mini IMG Extractor, Jason Chalom 2024 v0.1 \n"
+printf "Mini IMG Extractor, Jason Chalom 2024 v0.2 \n"
 
 if [ -z "$IMAGE_PATH" ] || [ -z "$DESTINATION_DIR" ]; then
   printf "Usage: $0 IMAGE_PATH DESTINATION_DIR \n" >&2
@@ -31,7 +31,7 @@ mkdir -p "${DESTINATION_DIR}/${IMG_NAME}"
 mkdir -p "${DESTINATION_DIR}/tmp_mount"
 
 sudo mount -o loop "${IMAGE_PATH}" "${DESTINATION_DIR}/tmp_mount"
-cp -r "${DESTINATION_DIR}/tmp_mount/"* "${DESTINATION_DIR}/${IMG_NAME}"
+cp -pr "${DESTINATION_DIR}/tmp_mount/"* "${DESTINATION_DIR}/${IMG_NAME}"
 sudo umount "${DESTINATION_DIR}/tmp_mount"
 
 rm -rf "${DESTINATION_DIR}/tmp_mount"

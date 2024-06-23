@@ -1,50 +1,42 @@
 @echo off
 cls
 
-echo This is an archiver script to archive floppy in batch
+echo This is an archiver script for batch archiving and cataloguing of floppies
 echo Copyright Jason Chalom 2024 v0.1
 echo.
 
-set "BaseSavePath=%1"
-set "DriveLetter=%2"
+rem Add in parameters
+set base_path=%1
+set drive_letter=%2
 
-if "%1%2" equ "" (
-    echo Usage: archive.bat BaseSavePath DriveLetter
-    goto END
-)
+echo "TEST: %*"
+echo %*
+echo [%]
 
-if NOT defined %1 (
-    echo Error: BaseSavePath is missing
-    goto END
-)
+if "%1"=="" goto USAGE
+if "%2"=="" goto USAGE
 
-if NOT defined %2 (
-    echo Error: DriveLetter is missing
-    goto END
-)
+rem :loop
+rem goto loop
+rem :end
 
-rem if NOT "!BaseSavePath:" == "%BaseSavePath!" (
-rem     echo Error: BaseSavePath is invalid
-rem     goto END
-rem )
+:ARCHIVE_DISK
+rem Ask for disk name
 
-if NOT "%DriveLetter:~0,1" in (A B C D E F G H I J K L M N O P Q R S T U V W X Y Z) (
-    echo Error: DriveLetter is invalid
-    goto END
-)
+rem TODO: Check uniqueness of filename
 
-rem set /p outer_archive_path="Enter Base Archive Path: "
+rem Calculate Archive Path
+set archive_path="%base_path%"
 
+rem Calculate File List (DIR)
+rem Calculate File List (LS)
+rem Calculate MD5
 
-rem This is the component which is looped
+rem TODO: Check Boot sector for viruses
 
-rem Use IMD via AUTOKEY to archive the given path
-
-
-rem Use ls to generate file list
-ls -lh
-
-rem Use DD to try and generate an IMG from a given drive path
+:USAGE
+echo Usage: archive.bat BaseSavePath DriveLetter
+rem exit /B 1
 
 :END
 echo Done!

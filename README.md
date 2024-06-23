@@ -11,6 +11,8 @@ You will need these tools installed and configured to use this script:
 6. Strings (https://web.archive.org/web/20000914073439/http://2dos.homepage.dk/batutil/strings.zip)
 7. AUTOKEY Used for Macros - (https://archive.org/details/Simtel20_Sept92)
 8. tee - FreeDOS (https://www.ibiblio.org/pub/micro/pc-stuff/freedos/files/util/unix/tee/tee203.zip)
+9. MD5 (https://www.fourmilab.ch/md5/)
+10. Norton AntiVirus - DOS NAV (https://winworldpc.com/product/norton-anti-virus/20)
 
 # Useful Links
 - https://tinyapps.org/blog/202204170700_imaging_recovering_floppies.html
@@ -31,6 +33,9 @@ http://zuga.net/articles/dos-where-can-i-find-tee-for-windows/
 4. FreeDOS (https://freedos.org/)
 Has been greatly helpful and has useful utilities
 Repo of files: https://www.ibiblio.org/pub/micro/pc-stuff/freedos/files/
+
+5. More modern reference MD5 implementation
+https://github.com/Zunawe/md5-c
 
 # Old GNU 4.5.4
 - https://ftp.gnu.org/pub/old-gnu/Manuals/coreutils-4.5.4/html_mono/coreutils.html
