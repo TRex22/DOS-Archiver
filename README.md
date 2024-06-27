@@ -12,7 +12,7 @@ You will need these tools installed and configured to use this script:
 7. AUTOKEY Used for Macros - (https://archive.org/details/Simtel20_Sept92)
 8. tee - FreeDOS (https://www.ibiblio.org/pub/micro/pc-stuff/freedos/files/util/unix/tee/tee203.zip)
 9. MD5 (https://www.fourmilab.ch/md5/)
-10. DI DiskImager
+10. DskImage (https://www.brutman.com/DskImage/)
 11. Norton Antivirus BootDisk (https://archive.org/details/symantec_norton_antivirus)
 12. CHOICE.COM
 
@@ -52,6 +52,8 @@ https://github.com/Zunawe/md5-c
 11. https://www.pement.org/sed/bat_env.htm#4dos
 
 12. FreeDOS ClamAV (https://www.ibiblio.org/pub/micro/pc-stuff/freedos/files/util/system/clamav/)
+
+13. DI DiskImager (https://github.com/fredrikdev/DiskImager)
 
 # Old GNU 4.5.4
 - https://ftp.gnu.org/pub/old-gnu/Manuals/coreutils-4.5.4/html_mono/coreutils.html
