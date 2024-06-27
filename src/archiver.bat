@@ -58,7 +58,7 @@ echo Base Path: %base_path%
 rem Archive Logic
 rem ------------------------------------------------------------------- rem
 rem Ask for disk name
-strings drive_letter=ask Enter Drive Letter to Archive (e.g. A or B): '
+strings drive_letter=ask Enter Drive Letter to Archive (e.g. A or B): 
 set source_path=%drive_letter%:\
 set drive_path=%drive_letter%:
 
@@ -67,9 +67,9 @@ if "%drive_letter%"=="a" set drive_number=0
 if "%drive_letter%"=="B" set drive_number=1
 if "%drive_letter%"=="b" set drive_number=2
 
-strings diskname=ask Enter Disk Name: '
-strings comment=ask Enter Disk Comments: '
-strings disk_size=ask Enter Disk Size (360 720 1.2 1.44): '
+strings diskname=ask Enter Disk Name: 
+strings comment=ask Enter Disk Comments: 
+strings disk_size=ask Enter Disk Size (360 720 1.2 1.44): 
 
 rem tracks - 80 for everything except 360k
 set tracks=80
