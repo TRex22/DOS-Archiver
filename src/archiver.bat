@@ -7,7 +7,7 @@ cls
 @echo off
 
 echo This is an archiver script for batch archiving and cataloguing of floppies
-echo Copyright Jason Chalom 2024 v0.1
+echo Copyright Jason Chalom 2024 v0.3
 echo.
 
 strings today=date
@@ -15,6 +15,10 @@ strings now=time
 set timestamp=%today%, %now%
 echo The date is %timestamp%
 echo.
+
+set base_path=%1
+if "%1"=="" goto USAGE
+
 pause
 
 echo Static Paths
@@ -51,8 +55,6 @@ echo.
 pause
 
 rem Add in parameters
-set base_path=%1
-if "%1"=="" goto USAGE
 echo Base Path: %base_path%
 
 rem Archive Logic
@@ -80,12 +82,14 @@ set heads=2
 
 rem Sectors
 set sectors=""
-if "%disk_size%"=="360" set sectors=40
-if "%disk_size%"=="720" set sectors=40
-if "%disk_size%"=="1.2" set sectors=40
-if "%disk_size%"=="1.44" set sectors=40
+if "%disk_size%"=="360" set sectors=9
+if "%disk_size%"=="720" set sectors=9
+if "%disk_size%"=="1.2" set sectors=15
+if "%disk_size%"=="1.44" set sectors=18
 
 if %sectors%=="" goto WRONG_DISK_TYPE
+
+set bios_drive=%drive_number%:%tracks%:%heads%:%sectors%
 
 rem Calculate Archive Path (Enter in folder \)
 set archive_path=%base_path%%diskname%
@@ -99,6 +103,7 @@ echo archive_path: %archive_path%
 echo diskname: %diskname%
 echo comment: %comment%
 echo disk_size: %disk_size%
+echo bios_drive: %bios_drive%
 echo.
 pause
 
@@ -129,33 +134,33 @@ DIR %source_path% /s /b /a > %archive_path%\dir_list_full.txt
 ATTRIB /S > %archive_path%\attrib_list.txt
 
 rem Calculate File List (LS)
-%LS_PATH% -a -R -l %source_path% > %archive_path%\ls_list.txt
+%LS_PATH% -a -R -l %drive_path% > %archive_path%\ls_list.txt
 
 rem Calculate MD5 of all files
 echo MD5 Source Listing Path: %source_path%*.*
 
 rem md5 can take in inf parameters
-rem md5 %source_path%*.* > %archive_path%\md5.txt"
-rem ls -a -R %source_path%
-for %%f in (%source_path%*.*) do %MD5_PATH% %%f > %archive_path%\md5_orig.txt
+for %%f in (%source_path%*.*) do %MD5_PATH% %source_path%%%f >> %archive_path%\md5_orig.txt
 
 rem Image disk using another tool
-%DSK_PATH% %drive_number%:%tracks%:%heads%:%sectors% %archive_path%\%diskname%.img
+%DSK_PATH% %bios_drive% %archive_path%\%diskname%.img
 
 rem Copy Files
 %MKD_PATH% -p %archive_path%\files
-%CP_PATH% -rvf %source_path%* %archive_path%\files
+%CP_PATH% -prvf %source_path%* %archive_path%\files
 
 rem Recalculate MD5 from archive path
-for %%f in (%archive_path%\files\*.*) do %MD5_PATH% %%f > %archive_path%\md5_copy.txt
+for %%f in (%archive_path%\files\*.*) do %MD5_PATH% %archive_path%\files\%%f >> %archive_path%\md5_copy.txt
 
 goto END
 
 :WRONG_DISK_TYPE
-echo Valid Disk Types: 360, 720, 1.2, 1.44
+echo.
+echo Valid Disk Types: 360, 720, 1.2, 1.44 ... stopping.
 goto END
 
 :USAGE
+ehco.
 rem echo Usage: archive.bat BaseSavePath DriveLetter
 echo Usage: archive.bat BaseSavePath
 goto END
