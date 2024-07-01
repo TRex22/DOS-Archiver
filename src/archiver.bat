@@ -13,7 +13,7 @@ cls
 @echo off
 
 echo This is an archiver script for batch archiving and cataloguing of floppies
-echo Copyright Jason Chalom 2024 v0.3
+echo Copyright Jason Chalom 2024 v0.4
 echo.
 
 strings today=date
@@ -43,6 +43,7 @@ set ANY2IMD_PATH=%IMD_PATH%\ANY2IMD.COM
 set NAVDX_PATH=%ARCHIVER_PATH%\NAVDX.EXE
 set MD5_PATH=%ARCHIVER_PATH%\MD5.EXE
 set DSK_PATH=%ARCHIVER_PATH%\DSKIMAGE.COM
+set REL_PATH=%ARCHIVER_PATH%\REL.EXE
 set DSKIMAGE_RETRIES=10
 
 echo ARCHIVER_PATH: %ARCHIVER_PATH%
@@ -146,7 +147,9 @@ rem Calculate MD5 of all files
 echo MD5 Source Listing Path: %source_path%*.*
 
 rem md5 can take in inf parameters
-for %%f in (%source_path%*.*) do %MD5_PATH% %source_path%%%f >> %archive_path%\md5_orig.txt
+REL_PATH /r %source_path% > %archive_path%\rel_output_source.txt
+strings md5_files_list=read %archive_path%\rel_output_source.txt,1
+for %%f in (%md5_files_list%) do %MD5_PATH% %source_path%%%f >> %archive_path%\md5_orig.txt
 
 rem Image disk using another tool
 %DSK_PATH% %bios_drive% %archive_path%\%diskname%.img
@@ -156,7 +159,9 @@ rem Copy Files
 %CP_PATH% -prvf %source_path%* %archive_path%\files
 
 rem Recalculate MD5 from archive path
-for %%f in (%archive_path%\files\*.*) do %MD5_PATH% %archive_path%\files\%%f >> %archive_path%\md5_copy.txt
+REL_PATH /r %archive_path%\files\ > %archive_path%\rel_output_files.txt
+strings md5_files_list_copy=read %archive_path%\rel_output_files.txt,1
+for %%f in (%md5_files_list_copy%) do %MD5_PATH% %source_path%%%f >> %archive_path%\md5_copy.txt
 
 goto END
 
