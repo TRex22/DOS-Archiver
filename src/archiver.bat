@@ -1,19 +1,16 @@
 rem TODO: Check uniqueness of filename
 rem TODO: Log of process
 rem TODO: Make sure the required commands are present
-rem TODO: Recurse directories
-rem TODO: DISK MD5
 rem TODO: Conversions
 rem TODO: UNIX2DOS
 rem TODO: DOCUMENT TYPE DETECTION
-rem TODO: RELATIVE PATH SET GENERATION
-rem TODO: use BIOS.H DOS.H DIRENT.H
+
 
 cls
 @echo off
 
 echo This is an archiver script for batch archiving and cataloguing of floppies
-echo Copyright Jason Chalom 2024 v0.4
+echo Copyright Jason Chalom 2024 v0.5
 echo.
 
 strings today=date
@@ -57,6 +54,7 @@ echo NAVDX_PATH: %NAVDX_PATH%
 echo MD5_PATH: %MD5_PATH%
 echo DSK_PATH: %DSK_PATH%
 echo DSKIMAGE_RETRIES: %DSKIMAGE_RETRIES%
+echo REL_PATH: %REL_PATH%
 echo.
 
 pause
@@ -131,6 +129,16 @@ copy %archive_path%\%diskname%.ini %ARCHIVER_PATH%
 copy %archive_path%\%diskname%.ini %IMD_PATH%
 %ANY2IMD_PATH% %archive_path%\%diskname%.txt /P /I%diskname%
 
+rem Image disk using another tool
+echo RE=%DSK_PATH% %bios_drive% %archive_path%\%diskname%.img > %archive_path%\%diskname%d.ini
+echo RS=~EN~WA5000;~EN >> %archive_path%\%diskname%d.ini
+echo FD=0,24 >> %archive_path%\%diskname%d.ini
+echo WE=type >> %archive_path%\%diskname%d.ini
+
+copy %archive_path%\%diskname%d.ini %ARCHIVER_PATH%
+copy %archive_path%\%diskname%d.ini %IMD_PATH%
+%ANY2IMD_PATH% %archive_path%\%diskname%d.ini /P /I%diskname%d
+
 echo Virus Scan Disk
 rem Check Boot sector for viruses + all files
 %NAVDX_PATH% %source_path% /A /B+ /M+ /ZIPS /DOALLFILES > %archive_path%\nav_virus_scan.txt
@@ -144,24 +152,22 @@ rem Calculate File List (LS)
 %LS_PATH% -a -R -l %drive_path% > %archive_path%\ls_list.txt
 
 rem Calculate MD5 of all files
-echo MD5 Source Listing Path: %source_path%*.*
+echo MD5 Source Listing Path: %source_path%
+echo md5_files: %archive_path%\rel.txt
 
 rem md5 can take in inf parameters
-REL_PATH /r %source_path% > %archive_path%\rel_output_source.txt
-strings md5_files_list=read %archive_path%\rel_output_source.txt,1
-for %%f in (%md5_files_list%) do %MD5_PATH% %source_path%%%f >> %archive_path%\md5_orig.txt
-
-rem Image disk using another tool
-%DSK_PATH% %bios_drive% %archive_path%\%diskname%.img
+%REL_PATH% /r %source_path% > %archive_path%\rel.txt
+strings md5_files=read %archive_path%\rel.txt,1
+for %%f in (%md5_files%) do %MD5_PATH% %%f >> %archive_path%\md5_orig.txt
 
 rem Copy Files
 %MKD_PATH% -p %archive_path%\files
 %CP_PATH% -prvf %source_path%* %archive_path%\files
 
 rem Recalculate MD5 from archive path
-REL_PATH /r %archive_path%\files\ > %archive_path%\rel_output_files.txt
-strings md5_files_list_copy=read %archive_path%\rel_output_files.txt,1
-for %%f in (%md5_files_list_copy%) do %MD5_PATH% %source_path%%%f >> %archive_path%\md5_copy.txt
+%REL_PATH% /r %archive_path%\files\ > %archive_path%\rel_cp.txt
+strings md5_copy=read %archive_path%\rel_cp.txt,1
+for %%f in (%md5_copy%) do %MD5_PATH% %%f >> %archive_path%\md5_copy.txt
 
 goto END
 
@@ -171,7 +177,7 @@ echo Valid Disk Types: 360, 720, 1.2, 1.44 ... stopping.
 goto END
 
 :USAGE
-ehco.
+echo.
 rem echo Usage: archive.bat BaseSavePath DriveLetter
 echo Usage: archive.bat BaseSavePath
 goto END
