@@ -2,6 +2,12 @@ rem TODO: Check uniqueness of filename
 rem TODO: Log of process
 rem TODO: Make sure the required commands are present
 rem TODO: Recurse directories
+rem TODO: DISK MD5
+rem TODO: Conversions
+rem TODO: UNIX2DOS
+rem TODO: DOCUMENT TYPE DETECTION
+rem TODO: RELATIVE PATH SET GENERATION
+rem TODO: use BIOS.H DOS.H DIRENT.H
 
 cls
 @echo off

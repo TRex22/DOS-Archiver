@@ -63,3 +63,4 @@ build-iPhoneSimulator/
 *.ovl
 *.exp
 .DS_Store
+*.OBJ

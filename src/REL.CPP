@@ -1,5 +1,10 @@
 // Tool to compute absolute paths from relative paths
-// Quick 'n dirty and not properly C++
+// Quick 'n dirty and not properly C
+
+// Honourable mentions:
+// https://web.archive.org/web/20121102013522/http://www.dreamincode.net/code/snippet271.htm
+// https://stackoverflow.com/questions/2312110/efficiently-traverse-directory-tree-with-opendir-readdir-and-closedir
+// https://gist.github.com/t0mm13b/3cc7ee6e693dc940982c
 
 // #include <iostream.h>
 // #include <direct.h>
@@ -38,7 +43,7 @@ int is_path_dir(char *path) {
   return 0;
 }
 
-int skippable_dir(char *item) {
+int skippable_item(char *item) {
   if (strcmp(item, ".") == 0 || strcmp(item, "..") == 0) {
     return 1;
   }
@@ -51,6 +56,7 @@ void display_usage() {
   printf("Usage: REL.EXE [/?] [/r] <path>\n");
   printf("/? : Display usage information\n");
   printf("/r : Return all files recursively from directory\n");
+  // printf("/s : Silence all errors\n");
 }
 
 // https://stackoverflow.com/questions/612097/how-can-i-get-the-list-of-files-in-a-directory-using-c-or-c
@@ -61,24 +67,25 @@ void parse_dir(char *path, int recursive) {
   if (dir != NULL) {
     /* print all the files and directories within directory */
     while ((ent = readdir(dir)) != NULL) {
-      if (!skippable_dir(ent->d_name)) {
-        char full_path[MAX_STRING_LENGTH];
-
-        // int full_path_length = strlen(path) + strlen(ent->d_name);
-        strcat(full_path, path);
-
+      if (!skippable_item(ent->d_name)) {
+        // Print out files and directories in current path
         if (path[strlen(path) - 1] == *"\\") {
-          strcat(full_path, ent->d_name);
-        } else {
-          strcat(full_path, "\\");
-          strcat(full_path, ent->d_name);
+          printf("%s%s ", path, ent->d_name);
+        } else if (path[strlen(path) - 1] == *"\\") {
+          printf("%s%s%s ", path, "\\", ent->d_name);
         }
 
-        if (!is_path_dir(full_path)) {
-          printf(" %s", full_path);
-        } else if (ent->d_name != NULL && recursive == 1) {
-          // The recursion part of this tool
-          parse_dir(full_path, recursive);
+        // Recursive part
+        if (ent->d_name != NULL && recursive == 1) {
+          // !is_path_dir(full_path) &&
+          if (path[strlen(path) - 1] == *"\\") {
+            strcat(path, ent->d_name);
+          } else {
+            strcat(path, "\\");
+            strcat(path, ent->d_name);
+          }
+
+          parse_dir(path, recursive);
         }
       }
     }
