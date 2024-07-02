@@ -169,6 +169,9 @@ rem Recalculate MD5 from archive path
 strings md5_copy=read %archive_path%\rel_cp.txt,1
 for %%f in (%md5_copy%) do %MD5_PATH% %%f >> %archive_path%\md5_copy.txt
 
+%MKD_PATH% -p %archive_path%\conv
+CONVERTER.BAT %archive_path%\files %archive_path%\conv
+
 goto END
 
 :WRONG_DISK_TYPE
