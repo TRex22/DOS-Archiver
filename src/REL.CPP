@@ -16,7 +16,7 @@
 
 // Constants
 // https://superuser.com/questions/104220/is-there-a-limit-to-the-number-of-files-i-can-place-in-a-given-folder
-const char *VERSION = "v0.4";
+const char *VERSION = "v0.5";
 char *EMPTY = "";
 
 const int false = 0;
@@ -149,9 +149,13 @@ int matches_wildcard(int has_wildcard, char *wildcard, char *item) {
 }
 
 void print_path(char *path, char *item, int filenames_only) {
-  if (filenames_only) {
+  int path_has_slash = path[strlen(path) - 1] == '\\';
+
+  if (filenames_only && path_has_slash) {
     printf("%s%s ", path, remove_extension(item));
-  } else if (path[strlen(path) - 1] == '\\') {
+  } else if (filenames_only && !path_has_slash) {
+    printf("%s\\%s ", path, remove_extension(item));
+  } else if (path_has_slash) {
     printf("%s%s ", path, item);
   } else {
     printf("%s\\%s ", path, item);
