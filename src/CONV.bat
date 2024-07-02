@@ -20,6 +20,7 @@ if "%2"=="" goto USAGE
 rem pause
 
 echo Static Paths
+set ARCHIVER_PATH=C:\ARCHIVER
 set MKD_PATH=%ARCHIVER_PATH%\MKD.EXE
 set CV_PATH=C:\CV20\CV.EXE
 set REL_PATH=%ARCHIVER_PATH%\REL.EXE
