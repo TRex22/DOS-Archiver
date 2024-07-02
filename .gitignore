@@ -58,7 +58,7 @@ build-iPhoneSimulator/
 # Bin Files
 *.log
 *.com
-*.exe
+src/*.exe
 *.dat
 *.ovl
 *.exp
